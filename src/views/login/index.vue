@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form ref="ruleFormRef" :model="form" class="login-form" :rules="rules">
       <div class="title-container">
-        <h3 class="title">用户登录</h3>
+        <h3 class="title">{{ $t('login.title') }}</h3>
       </div>
       <el-form-item prop="name">
         <svg-icon class="svg-container" icon="user"></svg-icon>
@@ -16,7 +16,7 @@
         type="primary"
         class="login-button"
         @click="handleLogin(ruleFormRef)"
-        >登录</el-button
+        >{{ $t('login.btnTitle') }}</el-button
       >
     </el-form>
   </div>
@@ -45,7 +45,6 @@ const handleLogin = async (formEl) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log(store)
       store.dispatch('app/login', form.value)
     } else {
       console.log('error submit!', fields)

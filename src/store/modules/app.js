@@ -1,14 +1,23 @@
 import { login as loginApi } from '@/api/login'
 import router from '@/router'
+import { setTokenTime } from '@/utils/auth'
 export default {
   namespaced: true,
   state: () => ({
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('token') || '',
+    sidedType: true,
+    lang: localStorage.getItem('lang') || 'zh'
   }),
   mutations: {
     setToken(state, token) {
       state.token = token
       localStorage.setItem('token', token)
+    },
+    changeSidedType(state) {
+      state.sidedType = !state.sidedType
+    },
+    changeLang(state, lang) {
+      state.lang = lang
     }
   },
   actions: {
@@ -17,12 +26,18 @@ export default {
         loginApi(userInfo).then(res => {
           console.log(res)
           commit('setToken', res.token)
+          setTokenTime()
           router.replace('/')
           resolve()
         }).catch(err => {
           reject(err)
         })
       })
+    },
+    logout({ commit }) {
+      commit('setToken', '')
+      localStorage.clear()
+      router.replace('/login')
     }
   }
 }
